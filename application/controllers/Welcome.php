@@ -22,4 +22,16 @@ class Welcome extends CI_Controller {
 	{
 		$this->load->view('welcome_message');
 	}
+	
+	public function datatables()
+	{
+		$anggota = $this->db
+			->from('anggota')
+			->order_by('urutan')
+			->get();
+		
+		$this->load->view('welcome_datatables', array (
+			'anggota' => $anggota,
+		));
+	}
 }
