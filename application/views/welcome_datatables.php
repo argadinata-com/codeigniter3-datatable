@@ -35,7 +35,10 @@
 	
 	<script>
 	$().ready(function() {
-		$('.dt-client-side').DataTable();
+		$('.dt-client-side').DataTable({
+			pageLength: 3,
+			lengthMenu: [1, 3, 5]
+		});
 	});
 	</script>
 </body>
