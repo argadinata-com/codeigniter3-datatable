@@ -34,4 +34,44 @@ class Welcome extends CI_Controller {
 			'anggota' => $anggota,
 		));
 	}
+	
+	private function _dt_query()
+	{
+		$keyword = $_POST['search']['value'];
+		
+		return $this->db
+			->from('anggota')
+			->where ("(
+				nama LIKE '%{$keyword}%'
+				OR tgl_lahir LIKE '%{$keyword}%'
+				OR peran LIKE '%{$keyword}%'
+				OR pekerjaan LIKE '%{$keyword}%'
+			)");
+	}
+	
+	public function post_datatable()
+	{
+		$draw = $this->input->post('draw');
+		$offset = $this->input->post('start');
+		$num_rows = $this->input->post('length');
+		$order_index = $_POST['order'][0]['column'];
+		$order_by = $_POST['columns'][$order_index]['data'];
+		$order_direction = $_POST['order'][0]['dir'];
+		
+		$data = $this->_dt_query()
+			->order_by($order_by, $order_direction)
+			->limit($num_rows, $offset)
+			->get();
+		
+		$count = $this->_dt_query()->count_all_results();
+		
+		$response = array (
+			'draw' => intval($draw),
+			'iTotalRecords' => $data->num_rows(),
+			'iTotalDisplayRecords' => $count,
+			'aaData' => $data->result_array(),
+		);
+		
+		echo json_encode($response);
+	}
 }
