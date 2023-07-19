@@ -32,5 +32,11 @@
 			<?php endforeach; ?>
 		</tbdody>
 	</table>
+	
+	<script>
+	$().ready(function() {
+		$('.dt-client-side').DataTable();
+	});
+	</script>
 </body>
 </html>
